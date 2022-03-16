@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import vCard from "vcards-js";
-import { Contact, ContactSchema } from "../Models/Contact.model.js";
+import { Contact, ContactSchema } from "../models/Contact.model.js";
 
 /**
  * @param {mongoose.Model} contact
