@@ -1,3 +1,10 @@
+require('babel-register')
+const { loginView } = require('./src/controllers/loginController');
+console.log(loginView);
+const express = require('express')
+const app = express()
+const bodyParser = require('body-parser')
+const router = express.Router();
 import "dotenv/config";
 
 import transaction from "./db/mongo/connexion.js";
@@ -8,54 +15,28 @@ import { UserClass } from "./db/mongo/Models/User.model.js";
 import { exportToVCard } from "./db/mongo/Export/VCard.js";
 import { exportToPdf } from "./db/mongo/Export/PDF.js";
 
-const app = express();
+app.use(bodyParser.json())
 
-app.use(bodyParser.json());
+router.use(function (req, res, next) {
+    console.log('Time:', Date.now());
+    next();
+  });
 
-var server = app.listen(3000, () => {
-  console.log("Server online");
+app.set('view engine', 'pug')
+app.set('views', './src/views');
 
-  /* transaction(async (connection) => {
-    await User.create({
-      username: "ricardo",
-      password: "password",
-    })
-      .then(async (user) => {
-        await user
-          .save()
-          .then(async (u) => {
-            await Contact.create({
-              firstname: "ricardo",
-              lastname : "mmmmm",
-              creator: u,
-            }).then(async(c)=>{
-               await c.save().then(async(cc)=>{
-                 await  exportToVCard(cc);
-               })
-            }).catch((err) => {
-              console.log("contact creation failed "+ err);
-            });
+router.get('/', (req,res) => {
+    res.render('index', { title: 'Hey', message: 'Hello there!'})
+})
+
+router.get('/login', loginView);
+
+// app.get('/register', (req,res) => {
+//     res.render('auth/register', { title: 'Hey', message: 'Hello there!'})
+// })
 
 
-          })
-          .catch((err) => {
-            console.log("save failed");
-          });
-      })
-      .catch((err) => {
-        console.log("user creation failed");
-      });
-  });*/
+app.use('/', router);
 
-/*
-UserClass.modify("6231e5de2ead18db2dcd7035","newpassword").then((u)=>{console.log(u)}).catch(err=>console.log(err));
-*/
-  /*transaction(async (connection) => {
-    await Contact.findById("6231e5e02ead18db2dcd7039").then(async (u) => {
-       
-     console.log( exportToPdf(u));
-    });
-  });*/
 
- //console.log( exportToPdf());
-});
+app.listen(3000, console.log("Le serveur est démarré sur le port 3000"))
