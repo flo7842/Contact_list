@@ -9,8 +9,8 @@ import { Contact, ContactSchema } from "../Models/Contact.model.js";
 
 function exportToVCard(contact) {
   let vcard = vCard();
-  //console.log(contact);
-  if(contact.collection.collectionName === "contact"){
+
+  if(contact.constructor.modelName === "Contact"){
     vcard.firstName = contact.firstname;
     vcard.lastName = contact.lastname;
     vcard.cellPhone = contact.phone;

@@ -4,8 +4,9 @@ import transaction from "./db/mongo/connexion.js";
 import express from "express";
 import bodyParser from "body-parser";
 import { Contact } from "./db/mongo/Models/Contact.model.js";
-import { User } from "./db/mongo/Models/User.model.js";
+import { UserClass } from "./db/mongo/Models/User.model.js";
 import { exportToVCard } from "./db/mongo/Export/VCard.js";
+import { exportToPdf } from "./db/mongo/Export/PDF.js";
 
 const app = express();
 
@@ -16,7 +17,7 @@ var server = app.listen(3000, () => {
 
   /* transaction(async (connection) => {
     await User.create({
-      username: "francis",
+      username: "ricardo",
       password: "password",
     })
       .then(async (user) => {
@@ -46,10 +47,15 @@ var server = app.listen(3000, () => {
       });
   });*/
 
-  transaction(async (connection) => {
+/*
+UserClass.modify("6231e5de2ead18db2dcd7035","newpassword").then((u)=>{console.log(u)}).catch(err=>console.log(err));
+*/
+  /*transaction(async (connection) => {
     await Contact.findById("6231e5e02ead18db2dcd7039").then(async (u) => {
-        console.log(u)
-      exportToVCard(u);
+       
+     console.log( exportToPdf(u));
     });
-  });
+  });*/
+
+ //console.log( exportToPdf());
 });
