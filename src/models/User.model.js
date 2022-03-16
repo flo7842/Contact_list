@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import transaction from "../connexion.js";
+import transaction from "../databases/mongo/connexion.js";
 
 class UserClass {
   static UserSchema = new mongoose.Schema(
