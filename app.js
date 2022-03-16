@@ -1,85 +1,123 @@
-require('babel-register')
 const { loginView } = require('./src/controllers/loginController');
 const { registerView } = require('./src/controllers/registerController');
 
-const express = require('express')
-const mongoose = require('mongoose');
-const app = express()
-const bodyParser = require('body-parser')
-const router = express.Router();
 import "dotenv/config";
 
-import transaction from "./db/mongo/connexion.js";
+import transaction from "./src/databases/mongo/connexion.js";
 import express from "express";
 import bodyParser from "body-parser";
-import { Contact } from "./db/mongo/Models/Contact.model.js";
-import { UserClass } from "./db/mongo/Models/User.model.js";
-import { exportToVCard } from "./db/mongo/Export/VCard.js";
-import { exportToPdf } from "./db/mongo/Export/PDF.js";
+import { Contact } from "./src/models/Contact.model.js";
+import { UserClass } from "./src/models/User.model.js";
+import { exportToVCard } from "./src/exports/VCard.js";
+import { exportToPdf } from "./src/exports/PDF.js";
 
-const passport = require('./src/passport/setup')
-const auth = require('./src/controllers/loginController');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')
+import passport from './src/passport/setup.js';
+import auth from './src/controllers/loginController';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import mongoose from "mongoose";
 
-const User = require('./src/models/user')
+const app = express()
+const router = express.Router();
 
-const PORT = 3000
-const MONGO_URI = "mongodb+srv://flo7842:asse7842@cluster0.ygt8h.mongodb.net/toto?retryWrites=true&w=majority"
-
-
-app.use(bodyParser.json())
-app.use(express.urlencoded({extended: false}))
-
-
-app.use(
-    session({
-        store: new MongoStore({ mongoUrl: MONGO_URI }),
-        secret: "Un secret bien caché",
-        resave: false,
-        saveUninitialized: true,
-    })
-)
-
-
+app.use(express.static('public'))
+app.use(bodyParser.json());
 
 app.set('view engine', 'pug')
-app.set('views', './src/views');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(passport.initialize());
-app.use(passport.session());
+app.set('views', './public/views');
 
-// Passport Local Strategy
-passport.use(User.createStrategy());
+app.get('/', function (req, res) {
+    let users = [
+        {
+            id:1,
+            name: 'Ricardo MBK',
+            email: 'test@example.com'
+        },
+        {
+            id:2,
+            name: 'Binjamin', 
+            email: 'test@example.com'
+        },  
+        {
+            id:3,
+            name: 'Florian',
+            email: 'test@example.com'
+        }
+    ];
+  })
 
-// To use with sessions
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+        
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: true,
+    secret: "Un secret bien caché",
+    store: new MongoStore({ mongoUrl: MONGO_URI }),
+  })
+)
+res.render('index',{
+    title: 'Liste de vos contacts',
+    users:users,
+})    
 
-app.use(function (req, res, next) {
-    next();
-});
 
-
-router.get('/', (req,res) => {
-    res.render('index', { title: 'Hey', message: 'Hello there!'})
+app.get('/profile', function (req, res) {
+    res.render('user_profile')
 })
 
-
-
-
+var server = app.listen(3000, () => {
+    console.log("Server online");
+  
+    /* transaction(async (connection) => {
+      await User.create({
+        username: "ricardo",
+        password: "password",
+      })
+        .then(async (user) => {
+          await user
+            .save()
+            .then(async (u) => {
+              await Contact.create({
+                firstname: "ricardo",
+                lastname : "mmmmm",
+                creator: u,
+              }).then(async(c)=>{
+                 await c.save().then(async(cc)=>{
+                   await  exportToVCard(cc);
+                 })
+              }).catch((err) => {
+                console.log("contact creation failed "+ err);
+              });
+  
+  
+            })
+            .catch((err) => {
+              console.log("save failed");
+            });
+        })
+        .catch((err) => {
+          console.log("user creation failed");
+        });
+    });*/
+  
+  /*
+  UserClass.modify("6231e5de2ead18db2dcd7035","newpassword").then((u)=>{console.log(u)}).catch(err=>console.log(err));
+  */
+    /*transaction(async (connection) => {
+      await Contact.findById("6231e5e02ead18db2dcd7039").then(async (u) => {
+         
+       console.log( exportToPdf(u));
+      });
+    });*/
+  
+   //console.log( exportToPdf());
+  });
 router.get('/login', registerView);
-
 router.post('/login', passport.authenticate('local-signin', {
     successRedirect: '/',
     failureRedirect: '/signin'
     })
 );
-
-
-
-
-
-
-
-app.listen(PORT, console.log(`Le serveur est démarré sur le port ${PORT}`))
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());

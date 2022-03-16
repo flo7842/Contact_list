@@ -1,0 +1,12 @@
+extends layout.pug
+
+block content
+    div.container
+        div.row
+            div.col
+                h1.text-center.mt-5.p-5
+                    | #{title}
+                ul.list-group.list-group-flush
+                  each user, i in users
+                    li.list-group-item.list-group-item-light.d-flex.d-flex.justify-content-around
+                        a.text-decoration-none.text-dark.active(href='/index/' + i) #{user.id} - #{user.name} #{user.email}  
