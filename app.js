@@ -8,6 +8,7 @@ import { UserClass } from "./db/mongo/Models/User.model.js";
 import { exportToVCard } from "./db/mongo/Export/VCard.js";
 import { exportToPdf } from "./db/mongo/Export/PDF.js";
 
+app.use(express.static('public'))
 const app = express();
 
 app.use(bodyParser.json());
@@ -59,3 +60,35 @@ UserClass.modify("6231e5de2ead18db2dcd7035","newpassword").then((u)=>{console.lo
 
  //console.log( exportToPdf());
 });
+
+app.set('views engine', path.join(__dirname, 'views'));
+app.set('view engine', 'pug')
+app.get('/', function (req, res) {
+    let users = [
+        {
+            id:1,
+            name: 'Ricardo MBK',
+            email: 'test@example.com'
+        },
+            id:2,
+        {
+            name: 'Binjamin', 
+            email: 'test@example.com'
+        },  
+            id:3,
+        {
+            name: 'Florian',
+        }
+            email: 'test@example.com'
+    ];
+    res.render('index',{
+        title: 'Liste de vos contacts',
+    })
+        users:users,
+})
+app.get('/profile', function (req, res) {
+    res.render('user_profile')
+})
+app.listen(3000, function () {
+    console.log('Server listening on port 3000...')
+})
