@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
 import vCard from "vcards-js";
-import { Contact, ContactSchema } from "../models/Contact.model.js";
+  
 
 /**
  * @param {mongoose.Model} contact
  *
  */
-
 function exportToVCard(contact) {
   let vcard = vCard();
 
@@ -16,8 +15,8 @@ function exportToVCard(contact) {
     vcard.cellPhone = contact.phone;
     vcard.email = contact.email;
   }
-
-  return vcard;
+ 
+  return vcard.getFormattedString();
 }
 
 export {exportToVCard}
