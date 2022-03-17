@@ -6,7 +6,43 @@ block content
             div.col
                 h1.text-center.mt-5.p-5
                     | #{title}
-                ul.list-group.list-group-flush
-                  each user, i in users
-                    li.list-group-item.list-group-item-light.d-flex.d-flex.justify-content-around
-                        a.text-decoration-none.text-dark.active(href='/index/' + i) #{user.id} - #{user.name} #{user.email}  
+                //- ul.list-group.list-group-flush
+                //-   each user in users
+                //-     li.list-group-item.list-group-item-light.d-flex.d-flex.justify-content-around
+                //-         a.text-decoration-none.text-dark.active(href='/index/' + i) id - #{user.id} name - #{user.name} - #{user.email}  
+
+                table.table.table-hover
+                    thead.table-dark
+                        tr
+                        th(scope='col') Id
+                        th(scope='col') nom
+                        th(scope='col') email
+                        th(scope='col') action
+                    tbody
+                      each user in users
+                        tr
+                          th(scope='row') #{user.id}
+                          td #{user.name}
+                          td #{user.email}
+                          td
+                            //- i.fa-solid.fa-trash-can
+                            a.delete.text-decoration-none.text-danger(href='#' title='Supprimer' data-toggle='tooltip')
+                                i.fa-solid.fa-trash-can.my-3
+                                |
+                                |
+                                |
+                            a.edit.text-decoration-none.text-dark(href='#' title='Modifier' data-toggle='tooltip')
+                                i.fa-solid.fa-pen-to-square
+                            //- a.edit(href='#' title='Edit' data-toggle='tooltip')
+                            //-     i.fa-solid.fa-trash-can
+                            //- a.delete(href='#' title='Delete' data-toggle='tooltip')
+                            //-     i.fa-solid.fa-trash-can
+                        //- tr
+                        //-   th(scope='row') 2
+                        //-   td Jacob
+                        //-   td Thornton
+                        //-   td @fat
+                        //- tr
+                        //-   th(scope='row') 3
+                        //-   td(colspan='2') Larry the Bird
+                        //-   td @twitter"

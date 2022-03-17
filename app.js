@@ -7,9 +7,12 @@ import { Contact } from "./src/models/Contact.model.js";
 import { UserClass } from "./src/models/User.model.js";
 import { exportToVCard } from "./src/exports/VCard.js";
 import { exportToPdf } from "./src/exports/PDF.js";
-import pkg from 'express/lib/application.js';
+import homepage from "./src/routes/homepage.js";  
+
 
 const app = express();
+
+  
 
 app.use(express.static('public'))
 app.use(bodyParser.json());
@@ -17,34 +20,14 @@ app.use(bodyParser.json());
 app.set('view engine', 'pug')
 app.set('views', './public/views');
 
-app.get('/', function (req, res) {
-    let users = [
-        {
-            id:1,
-            name: 'Ricardo MBK',
-            email: 'test@example.com'
-        },
-        {
-            id:2,
-            name: 'Binjamin', 
-            email: 'test@example.com'
-        },  
-        {
-            id:3,
-            name: 'Florian',
-            email: 'test@example.com'
-        }
-    ];
 
-    res.render('index',{
-        title: 'Liste de vos contacts',
-        users:users,
-    })    
-})
+// app.get('/profile', function (req, res) {
+//     res.render('user_profile')
+// })
 
-app.get('/profile', function (req, res) {
-    res.render('user_profile')
-})
+//Monted Route
+app.use("/", homepage)
+
 
 var server = app.listen(3000, () => {
     console.log("Server online");
