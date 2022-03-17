@@ -2,16 +2,28 @@ extends layout.pug
 
 block content
     div.container
-        div.row.d-flex
-            div.col 
+        div.row
+            div.col
                 h1.mt-5.p-5.text-center
                     |#{title}
-                .card.mb-3.align-items-center.justify-content-center    
+                .card.mb-3
                     .row.g-0
-                    .col-md-6
+                    .col-md-6.bg-warning
                         .card-body
-                            h5.card-title Card title
-                            p.card-text
-                            | This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-                            p.card-text
-                            small.text-muted Last updated 3 mins ago     
+                            .flex-shrink-0
+                                img.img-fluid(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp' alt='Generic placeholder image' style='width: 180px; border-radius: 10px;')
+                                |
+                                |
+                                img.img-fluid(src=`${data}` alt='Generic placeholder image' style='width: 180px; border-radius: 10px;')
+                                p.card-text
+                                small.text-muted
+                                |Nom : #{user.firstname}    
+                                p.card-text
+                                small.text-muted
+                                |Prénom : #{user.lastname}    
+                                p.card-text
+                                small.text-muted
+                                |Email : #{user.email}    
+                                p.card-text
+                                small.text-muted
+                                |Téléphone : #{user.phone}    

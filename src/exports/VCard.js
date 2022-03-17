@@ -17,7 +17,7 @@ function exportToVCard(contact) {
     vcard.email = contact.email;
   }
 
-  return vcard;
+  return vcard.getFormattedString();
 }
 
 export {exportToVCard}
