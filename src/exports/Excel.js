@@ -1,8 +1,6 @@
 import pkg from "exceljs";
 const { Workbook } = pkg;
-import { utils } from "xlsx";
 import * as fs from "fs";
-import mongoose from "mongoose";
 
 /**
  * 

@@ -7,10 +7,15 @@ import { exportToVCard } from "./src/exports/VCard.js";
 import { exportToPdf } from "./src/exports/PDF.js";
 import { deleteExcel, exportToExcel } from "./src/exports/Excel.js";
 import homepage from "./src/routes/homepage.js";  
-import profile from "./src/routes/profile.js";  
+import profile from "./src/routes/profile.js";
+import {checkNotAuthenticated} from "./src/middlewares/checkAuthStatus.js";
+import {registerController} from "./src/controllers/registerController.js";
+import LocalStrategy from "passport-local";
+import bcrypt from "bcryptjs";
+import transaction from "./src/databases/mongo/connexion.js";
+import MongoStore from "connect-mongo";
 
-
-  
+const app = express();
 
 app.use(express.static('public'))
 app.use(bodyParser.json());
