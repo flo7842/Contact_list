@@ -6,7 +6,11 @@ import { UserClass } from "./src/models/User.model.js";
 import { exportToVCard } from "./src/exports/VCard.js";
 import { exportToPdf } from "./src/exports/PDF.js";
 import { deleteExcel, exportToExcel } from "./src/exports/Excel.js";
+import homepage from "./src/routes/homepage.js";  
+import profile from "./src/routes/profile.js";  
 
+
+  
 
 app.use(express.static('public'))
 app.use(bodyParser.json());
@@ -14,30 +18,10 @@ app.use(bodyParser.json());
 app.set("view engine", "pug");
 app.set("views", "./public/views");
 
-app.get('/', function (req, res) {
-    let users = [
-        {
-            id:1,
-            name: 'Ricardo MBK',
-            email: 'test@example.com'
-        },
-        {
-            id:2,
-            name: 'Binjamin', 
-            email: 'test@example.com'
-        },  
-        {
-            id:3,
-            name: 'Florian',
-            email: 'test@example.com'
-        }
-    ];
 
-    res.render('index',{
-        title: 'Liste de vos contacts',
-        users:users,
-    })    
-})
+//Monted Route
+app.use("/", homepage);
+app.use(profile);
 
 app.get("/profile", function (req, res) {
   res.render("user_profile");

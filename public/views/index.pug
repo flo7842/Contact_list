@@ -6,7 +6,30 @@ block content
             div.col
                 h1.text-center.mt-5.p-5
                     | #{title}
-                ul.list-group.list-group-flush
-                  each user, i in users
-                    li.list-group-item.list-group-item-light.d-flex.d-flex.justify-content-around
-                        a.text-decoration-none.text-dark.active(href='/index/' + i) #{user.id} - #{user.name} #{user.email}  
+                table.table.table-hover
+                    thead.table-dark
+                        tr
+                        th(scope='col') Id
+                        th(scope='col') Nom
+                        th(scope='col') Email
+                        th(scope='col') Tel
+                        th(scope='col') Action
+                    tbody
+                      each user in users
+                        tr
+                          th(scope='row') #{user.id}
+                          td #{user.name}
+                          td #{user.email}
+                          td #{user.tel}
+                          td
+                            a.delete.text-decoration-none.text-danger(href='#' title='Supprimer' data-toggle='tooltip')
+                                i.fa-solid.fa-trash-can.my-3
+                                ||
+                                ||
+                            a.edit.text-decoration-none.text-dark(href='#' title='Modifier' data-toggle='tooltip')
+                                i.fa-solid.fa-pen-to-square
+                                ||
+                                ||
+                            a.view.text-decoration-none.text-info(href='/profile' title='voir le profile' data-toggle='tooltip')
+                                i.fa-solid.fa-eye
+                            
