@@ -1,38 +1,20 @@
 import "dotenv/config";
 import express from "express";
 import bodyParser from "body-parser";
+import { ContactClass } from "./src/models/Contact.model.js";
 import { UserClass } from "./src/models/User.model.js";
 import { exportToVCard } from "./src/exports/VCard.js";
 import { exportToPdf } from "./src/exports/PDF.js";
+import { deleteExcel, exportToExcel } from "./src/exports/Excel.js";
 
-
-import session from 'express-session'
-import passport from "passport";
-import {registerController} from "./src/controllers/registerController.js";
-
-import {checkAuthenticated, checkNotAuthenticated} from "./src/middlewares/checkAuthStatus.js";
-
-
-const app = express()
-const router = express.Router();
 
 app.use(express.static('public'))
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
 
-app.set('view engine', 'pug')
-app.set('views', './public/views');
+app.set("view engine", "pug");
+app.set("views", "./public/views");
 
-// Cette importation nécessite d'être déclaré avant le passport initialize et le passport session
-app.use(session({
-    secret: "toto",
-    resave: false,
-    saveUninitialized: false
-}))
-
-app.use(passport.initialize())
-app.use(passport.session())
-
-app.get('/', checkAuthenticated, function (req, res) {
+app.get('/', function (req, res) {
     let users = [
         {
             id:1,
@@ -51,15 +33,15 @@ app.get('/', checkAuthenticated, function (req, res) {
         }
     ];
 
-    res.render('index', {
-      title: 'Liste de vos contacts',
-      users:users,
-    })
+    res.render('index',{
+        title: 'Liste de vos contacts',
+        users:users,
+    })    
 })
 
-app.get('/profile', function (req, res) {
-    res.render('user_profile')
-})
+app.get("/profile", function (req, res) {
+  res.render("user_profile");
+});
 
 app.get('/register', checkNotAuthenticated, (req, res) => {
     res.render('register');
@@ -67,11 +49,10 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 
 app.post('/register', checkNotAuthenticated, registerController)
 
-const user = new UserClass();
 
 var server = app.listen(3000, () => {
     console.log("Server online");
-  
+
     /* transaction(async (connection) => {
       await User.create({
         username: "ricardo",
@@ -103,19 +84,30 @@ var server = app.listen(3000, () => {
           console.log("user creation failed");
         });
     });*/
-  
-  /*
+
+    /*
   UserClass.modify("6231e5de2ead18db2dcd7035","newpassword").then((u)=>{console.log(u)}).catch(err=>console.log(err));
   */
+
+    ContactClass.retrievesByUser("6231e5de2ead18db2dcd7035")
+      .then((res) => {
+        deleteExcel(exportToExcel(res));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     /*transaction(async (connection) => {
       await Contact.findById("6231e5e02ead18db2dcd7039").then(async (u) => {
          
        console.log( exportToPdf(u));
       });
     });*/
-  
-   //console.log( exportToPdf());
-});
 
-//router.get('/login', registerView);
-
+    //console.log( exportToPdf());
+  })
+  .on("SIGTERM", () => {
+    debug("SIGSTP signal received: closing HTTP server");
+    server.close(() => {
+      console.log("Server offline");
+    });
+  });

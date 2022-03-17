@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import transaction from "../databases/mongo/connexion.js";
+import Generic from "./Generic.model.js";
 
 class UserClass {
   static UserSchema = new mongoose.Schema(
@@ -32,15 +33,7 @@ class UserClass {
    */
 
   static register(fields) {
-    return transaction(async (connection) => {
-      return await UserClass.User.create(fields)
-        .then(async (u) => {
-          return await u.save();
-        })
-        .catch((err) => {
-          throw "Duplicate or wrong existing data";
-        });
-    });
+    return Generic.create(fields, UserClass.User);
   }
   /**
    *
@@ -50,12 +43,7 @@ class UserClass {
     if (ids instanceof String) {
       ids = [ids];
     }
-
-    return transaction(async (connection) => {
-      return UserClass.User.deleteOne({ _id: { $in: ids } }).catch((err) => {
-        throw "The user requested cannot be find or can't be deleted";
-      });
-    });
+    return Generic.delete(ids, UserClass.User);
   }
 
   /**
@@ -64,9 +52,11 @@ class UserClass {
    * @param {String} password
    */
   static modify(id, password) {
-    return transaction(async (connection) => {
-      return UserClass.User.updateOne({ _id: id }, { password: password });
-    });
+    return Generic.modify({ _id: id }, { password: password }, UserClass.User);
+  }
+
+  static retrieve(critera, showFields) {
+    return Generic.read(critera, showFields, UserClass.User);
   }
 }
 
