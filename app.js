@@ -1,32 +1,38 @@
-const { loginView } = require('./src/controllers/loginController');
-const { registerView } = require('./src/controllers/registerController');
-
 import "dotenv/config";
-
-import transaction from "./src/databases/mongo/connexion.js";
 import express from "express";
 import bodyParser from "body-parser";
-import { Contact } from "./src/models/Contact.model.js";
 import { UserClass } from "./src/models/User.model.js";
 import { exportToVCard } from "./src/exports/VCard.js";
 import { exportToPdf } from "./src/exports/PDF.js";
 
-import passport from './src/passport/setup.js';
-import auth from './src/controllers/loginController';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
-import mongoose from "mongoose";
+
+import session from 'express-session'
+import passport from "passport";
+import {registerController} from "./src/controllers/registerController.js";
+
+import {checkAuthenticated, checkNotAuthenticated} from "./src/middlewares/checkAuthStatus.js";
+
 
 const app = express()
 const router = express.Router();
 
 app.use(express.static('public'))
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.set('view engine', 'pug')
 app.set('views', './public/views');
 
-app.get('/', function (req, res) {
+// Cette importation nécessite d'être déclaré avant le passport initialize et le passport session
+app.use(session({
+    secret: "toto",
+    resave: false,
+    saveUninitialized: false
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.get('/', checkAuthenticated, function (req, res) {
     let users = [
         {
             id:1,
@@ -44,26 +50,24 @@ app.get('/', function (req, res) {
             email: 'test@example.com'
         }
     ];
-  })
 
-        
-app.use(
-  session({
-    resave: false,
-    saveUninitialized: true,
-    secret: "Un secret bien caché",
-    store: new MongoStore({ mongoUrl: MONGO_URI }),
-  })
-)
-res.render('index',{
-    title: 'Liste de vos contacts',
-    users:users,
-})    
-
+    res.render('index', {
+      title: 'Liste de vos contacts',
+      users:users,
+    })
+})
 
 app.get('/profile', function (req, res) {
     res.render('user_profile')
 })
+
+app.get('/register', checkNotAuthenticated, (req, res) => {
+    res.render('register');
+})
+
+app.post('/register', checkNotAuthenticated, registerController)
+
+const user = new UserClass();
 
 var server = app.listen(3000, () => {
     console.log("Server online");
@@ -111,13 +115,7 @@ var server = app.listen(3000, () => {
     });*/
   
    //console.log( exportToPdf());
-  });
-router.get('/login', registerView);
-router.post('/login', passport.authenticate('local-signin', {
-    successRedirect: '/',
-    failureRedirect: '/signin'
-    })
-);
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+});
+
+//router.get('/login', registerView);
+

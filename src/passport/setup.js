@@ -1,54 +1,28 @@
-const bcrypt = require("bcryptjs")
-const User = require("../models/user")
-const passport = require("passport")
-const LocalStrategy = require("passport-local").Strategy
+import LocalStrategy, { Strategy } from 'passport-local';
+import bcrypt from 'bcrypt'
 
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
+export const Setup = (passport, getUserByEmail, getUserById) => {
+  const authenticateUser = async (email, password, done) => {
+    const user = getUserByEmail(email)
+    if (user == null) {
+      return done(null, false, { message: 'No user with that email' })
+    }
 
-passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-        done(err, user);
-    });
-});
+    try {
+      if (await bcrypt.compare(password, user.password)) {
+        return done(null, user)
+      } else {
+        return done(null, false, { message: 'Password incorrect' })
+      }
+    } catch (e) {
+      return done(e)
+    }
+  }
 
-passport.use(
-    new LocalStrategy({ usernameField: "username" }, (email, password, done) => {
-        User.findOne({username: email})
-            .then(user => {
-                if(!user){
-                    const newUser = new User({ email, password});
-                    bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(newUser.passport, salt, (err, hash) => {
-                            if(err) throw err;
-                            newUser.password = hash;
-                            newUser
-                                .save()
-                                .then(user => {
-                                    return done(null, user);
-                                })
-                                .catch(err => {
-                                    return done(null, false, { message: err });
-                                });
-                        });
-                    });
-                } else {
-                    bcrypt.compare(password, user.password, (err, isMatch) => {
-                        if(err) throw err;
-                        if(isMatch){
-                            return done(null, user);
-                        } else {
-                            return done(null, false, {message: "Wrong password"});
-                        }
-                    });
-                }
-            })
-            .catch(err => {
-                return done(null, false, {message: err})
-            });
-    })
-);
+  passport.use(new LocalStrategy({ usernameField: 'email' }, authenticateUser))
+  passport.serializeUser((user, done) => done(null, user.id))
+  passport.deserializeUser((id, done) => {
+    return done(null, getUserById(id))
+  })
+}
 
-
-module.exports = passport;

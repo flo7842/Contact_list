@@ -1,27 +1,20 @@
-const passport = require("passport")
-console.log(process.cwd());
-const registerView = (async (req, res) => {
-    // passport.authenticate("local", async function(err, user, info) {
-    //     if(err){
-    //         res.render('auth/login', { title: 'register', error: err});
-    //     }
-    //     if(!user){
-    //         res.render('auth/login', { title: 'register', error: 'Cette utilisateur n\'existe pas'});
-    //     }
-    //     //const newUser = new User({ username: "candy", password: "toto" })
-    //    // await newUser.save();
-    //     req.logIn(user, function(err) {
-    //         if(err){
-    //             res.render('auth/login', { title: 'register', error: err});
-    //         }
-    //         res.render('index', { title: 'register', success: "Bienvenue"});
-    //     });
-    // })(req, res, next);
+import {UserClass} from "../models/User.model.js";
+import bcrypt from 'bcryptjs';
 
-    const newUser = new User({ username: "candy", password: "toto" })
-    await newUser.save();
+const registerController = (async (req, res) => {
 
-    res.render(process.cwd() + '\\src\\views\\auth', { title: 'register', error: "err"});
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
+    UserClass.register({
+        username: req.body.username,
+        password: hashedPassword
+    }).then(data => {
+        console.log(data, "L'utilisateur")
+        res.redirect('/login')
+    }).catch(err => {
+        console.error(err)
+        res.redirect('/register')
+    })
 });
 
-module.exports = registerView;
+export { registerController };
