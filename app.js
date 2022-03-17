@@ -52,62 +52,9 @@ app.post('/register', checkNotAuthenticated, registerController)
 
 var server = app.listen(3000, () => {
     console.log("Server online");
-
-    /* transaction(async (connection) => {
-      await User.create({
-        username: "ricardo",
-        password: "password",
-      })
-        .then(async (user) => {
-          await user
-            .save()
-            .then(async (u) => {
-              await Contact.create({
-                firstname: "ricardo",
-                lastname : "mmmmm",
-                creator: u,
-              }).then(async(c)=>{
-                 await c.save().then(async(cc)=>{
-                   await  exportToVCard(cc);
-                 })
-              }).catch((err) => {
-                console.log("contact creation failed "+ err);
-              });
-  
-  
-            })
-            .catch((err) => {
-              console.log("save failed");
-            });
-        })
-        .catch((err) => {
-          console.log("user creation failed");
-        });
-    });*/
-
-    /*
-  UserClass.modify("6231e5de2ead18db2dcd7035","newpassword").then((u)=>{console.log(u)}).catch(err=>console.log(err));
-  */
-
-    ContactClass.retrievesByUser("6231e5de2ead18db2dcd7035")
-      .then((res) => {
-        deleteExcel(exportToExcel(res));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    /*transaction(async (connection) => {
-      await Contact.findById("6231e5e02ead18db2dcd7039").then(async (u) => {
-         
-       console.log( exportToPdf(u));
-      });
-    });*/
-
-    //console.log( exportToPdf());
-  })
-  .on("SIGTERM", () => {
+}).on("SIGTERM", () => {
     debug("SIGSTP signal received: closing HTTP server");
     server.close(() => {
       console.log("Server offline");
     });
-  });
+});
