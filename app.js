@@ -25,7 +25,7 @@ app.set('views', './public/views');
 //Monted Route
 app.use("/", homepage);
 app.use(profile);
-app.use(login);
+
 
 
 var server = app.listen(3000, () => {
