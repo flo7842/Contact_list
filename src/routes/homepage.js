@@ -6,17 +6,20 @@ router.get('/', function (req, res) {
         {
             id:1,
             name: 'Ricardo MBK',
-            email: 'test@example.com'
+            email: 'test@example.com',
+            tel:'0145287098'
         },
         {
             id:4,
             name: 'Binjamin', 
-            email: 'test@example.com'
+            email: 'test@example.com',
+            tel:'0145287098'
         },  
         {
             id:3,
             name: 'Florian',
-            email: 'test@example.com'
+            email: 'test@example.com',
+            tel:'0145287098'
         }
     ];
 

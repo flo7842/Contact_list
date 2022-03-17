@@ -8,6 +8,7 @@ import { UserClass } from "./src/models/User.model.js";
 import { exportToVCard } from "./src/exports/VCard.js";
 import { exportToPdf } from "./src/exports/PDF.js";
 import homepage from "./src/routes/homepage.js";  
+import profile from "./src/routes/profile.js";  
 
 
 const app = express();
@@ -21,12 +22,10 @@ app.set('view engine', 'pug')
 app.set('views', './public/views');
 
 
-// app.get('/profile', function (req, res) {
-//     res.render('user_profile')
-// })
-
 //Monted Route
-app.use("/", homepage)
+app.use("/", homepage);
+app.use(profile);
+app.use(login);
 
 
 var server = app.listen(3000, () => {

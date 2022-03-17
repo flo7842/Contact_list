@@ -30,6 +30,7 @@
     "jspdf": "^2.5.1",
     "mongoose": "^6.2.6",
     "pug": "^3.0.2",
+    "vcard-creator": "^0.4.2",
     "vcards-js": "^2.10.0"
   },
   "devDependencies": {
