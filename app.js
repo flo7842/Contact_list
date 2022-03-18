@@ -16,7 +16,7 @@ import bcrypt from "bcryptjs";
 import transaction from "./src/databases/mongo/connexion.js";
 import MongoStore from "connect-mongo";
 
-import {checkAuthenticated, checkNotAuthenticated} from "./src/middlewares/checkAuthStatus.js";
+import {checkAuthenticated,} from "./src/middlewares/checkAuthStatus.js";
 import {toto} from "./src/models/user.js";
 import LocalStrategy from "passport-local";
 import transaction from "./src/databases/mongo/connexion.js";
