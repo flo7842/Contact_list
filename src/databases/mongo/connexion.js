@@ -4,19 +4,21 @@ import mongoose from "mongoose";
  * @param {callback} callBack
  */
 async function transaction(callBack) {
-  mongoose.connect(process.env.DB_URL, {
+  return await mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  }).then((data) => {
-    console.log("Vous êtes connecté !");
+  }).then(async (data) => {
+    console.log("connexion ok !");
+    let connection = mongoose.connection;
+    let res = await callBack(connection);
+    await connection.close();
+    return res;
   }).catch((err) => {
     console.log("Erreur de connexion");
-    console.err(err)
+    console.log(err)
+  
   });
-  let connection = mongoose.connection;
-  let res = await callBack(connection);
-  await connection.close();
-  return res;
+  
 }
 
 /**

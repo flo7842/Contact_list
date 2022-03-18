@@ -56,7 +56,7 @@ class Generic {
    * @returns
    */
   static read(critera, viewFields, model) {
-    return transaction(async (connection) => {
+    return transaction( (connection) => {
       return model.find(critera, viewFields).exec();
     });
   }

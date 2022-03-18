@@ -1,4 +1,4 @@
-var LocalStrategy = require('passport-local');
+import LocalStrategy from 'passport-local';
 
 
 
@@ -20,6 +20,6 @@ const loginView = (req, res) => {
     })(req, res, next);
 }
 
-module.exports = {
+export default {
     loginView
 };

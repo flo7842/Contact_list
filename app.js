@@ -7,6 +7,7 @@ import { exportToVCard } from "./src/exports/VCard.js";
 import { exportToPdf } from "./src/exports/PDF.js";
 import { deleteExcel, exportToExcel } from "./src/exports/Excel.js";
 import homepage from "./src/routes/homepage.js";  
+import contact from "./src/routes/contact.js";
 import profile from "./src/routes/profile.js";
 import {checkNotAuthenticated} from "./src/middlewares/checkAuthStatus.js";
 import {registerController} from "./src/controllers/registerController.js";
@@ -25,12 +26,13 @@ app.set("views", "./public/views");
 
 
 //Monted Route
-app.use("/", homepage);
+app.use(homepage);
+app.use(contact);
 app.use(profile);
 
-app.get("/profile", function (req, res) {
-  res.render("user_profile");
-});
+// app.get("/contact", function (req, res) {
+//   res.render("user_contact");
+// });
 
 app.get('/register', checkNotAuthenticated, (req, res) => {
     res.render('register');

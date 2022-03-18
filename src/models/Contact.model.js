@@ -30,10 +30,10 @@ class ContactClass {
   }
 
   static delete(id) {
-    if (ids instanceof String) {
-      ids = [ids];
+    if (id instanceof String) {
+      id = [id];
     }
-    return Generic.delete(ids, ContactClass.Contact);
+    return Generic.delete(id, ContactClass.Contact);
   }
 
   static retrieve(critera, showFields) {
