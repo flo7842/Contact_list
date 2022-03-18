@@ -11,7 +11,9 @@ import passport from "passport";
 import {registerController} from "./src/controllers/registerController.js";
 
 import {checkAuthenticated, checkNotAuthenticated} from "./src/middlewares/checkAuthStatus.js";
-
+import {toto} from "./src/models/user.js";
+import LocalStrategy from "passport-local";
+import transaction from "./src/databases/mongo/connexion.js";
 
 const app = express()
 const router = express.Router();
@@ -26,13 +28,52 @@ app.set('views', './public/views');
 app.use(session({
     secret: "toto",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true
 }))
+
+
 
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.get('/', checkAuthenticated, function (req, res) {
+passport.use(transaction().createStrategy());
+
+passport.use(new LocalStrategy(
+    // function of username, password, done(callback)
+    function(username, password, done) {
+        // look for the user data
+        toto.findOne({username: username})
+            .then(async (user, err) => {
+                    // if there is an error
+                console.log(user, "Le user")
+                    if (err) { return done(err); }
+                    // if user doesn't exist
+                    if (!user) { return done(null, false, { message: 'User not found.' }); }
+                    // if the password isn't correct
+                    //if (!user.verify(password)) { return done(null, false, {
+                    //    message: 'Invalid password.' }); }
+                    // if the user is properly authenticated
+                    return done(null, user);
+            })
+        //     , function (err, user) {
+        //     // if there is an error
+        //     if (err) { return done(err); }
+        //     // if user doesn't exist
+        //     if (!user) { return done(null, false, { message: 'User not found.' }); }
+        //     // if the password isn't correct
+        //     if (!user.verifyPassword(password)) { return done(null, false, {
+        //         message: 'Invalid password.' }); }
+        //     // if the user is properly authenticated
+        //     return done(null, user);
+        // });
+    }
+));
+
+passport.serializeUser(transaction().serializeUser());
+passport.deserializeUser(transaction().deserializeUser());
+
+app.get('/', function (req, res) {
+
     let users = [
         {
             id:1,
@@ -54,6 +95,7 @@ app.get('/', checkAuthenticated, function (req, res) {
     res.render('index', {
       title: 'Liste de vos contacts',
       users:users,
+
     })
 })
 
@@ -67,7 +109,11 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 
 app.post('/register', checkNotAuthenticated, registerController)
 
-const user = new UserClass();
+app.get('/login', (req, res) => {
+    res.render('auth/login');
+})
+
+app.post('/login', passport.authenticate('local', { failureRedirect: '/', success: '/' }))
 
 var server = app.listen(3000, () => {
     console.log("Server online");

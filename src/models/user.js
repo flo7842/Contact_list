@@ -1,30 +1,47 @@
-const mongoose = require('mongoose')
-const passportLocalMongoose = require('passport-local-mongoose');
-const MONGO_URI = "mongodb+srv://flo7842:asse7842@cluster0.ygt8h.mongodb.net/toto?retryWrites=true&w=majority"
+import mongoose from 'mongoose'
+import passportLocalMongoose from 'passport-local-mongoose'
 
-const options = {
-    useNewUrlParser: true, useUnifiedTopology: true
-}
-
-mongoose
-    .connect(MONGO_URI, { keepAlive: true, keepAliveInitialDelay: 300000 })
-    .then(console.log(`MongoDB connected ${MONGO_URI}`))
-    .catch(err => console.log("je tombe dans lerreur"))
+mongoose.connect("mongodb+srv://flo7842:asse7842@cluster0.ygt8h.mongodb.net/toto?retryWrites=true&w=majority",{
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 // Create Schema
 const Schema = mongoose.Schema;
 
-const User = new Schema({
-    username: {
-        type: String
+const User = new Schema(
+    {
+        username: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
     },
-    password: { 
-        type: String
+    {
+        collection: "user",
+        timestamps: true,
     }
-});
+);
 
 User.plugin(passportLocalMongoose)
 
 
 
-module.exports = mongoose.model('user', User);
+const toto = mongoose.model('user', User, 'user')
+
+console.log(toto, 'db connection model')
+
+// toto.findOne({username: 'dfdf'}).then(async (data) => {
+//      let tkkg = await data
+//      console.log(tkkg, 'toto')
+// })
+
+// toto.register({ username: 'flo7842', password: "false" }, 'toto').then(async(data) => {
+//     console.log(data, 'dataaa')
+// })
+
+export {toto}
 

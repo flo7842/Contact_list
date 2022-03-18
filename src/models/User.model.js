@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import transaction from "../databases/mongo/connexion.js";
+import LocalStrategy from "passport-local";
+import passportLocalMongoose from "passport-local-mongoose";
+import * as User from "mongoose";
 
 class UserClass {
   static UserSchema = new mongoose.Schema(
@@ -23,13 +26,20 @@ class UserClass {
   /**
    * @param {mongoose.Model} User
    */
-  static User = mongoose.model("User", UserClass.UserSchema);
-
+  static User = UserClass.test()
   /**
    *
    * @param {Object} fields
    * @returns
    */
+
+   static test(){
+      const mongotest = mongoose.model("User", UserClass.UserSchema);
+      UserClass.UserSchema.plugin(passportLocalMongoose)
+
+      return mongotest
+  }
+
 
   static register(fields) {
     return transaction(async (connection) => {
@@ -69,5 +79,7 @@ class UserClass {
     });
   }
 }
+
+
 
 export { UserClass };
