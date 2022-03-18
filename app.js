@@ -15,7 +15,13 @@ import bcrypt from "bcryptjs";
 import transaction from "./src/databases/mongo/connexion.js";
 import MongoStore from "connect-mongo";
 
-const app = express();
+import {checkAuthenticated, checkNotAuthenticated} from "./src/middlewares/checkAuthStatus.js";
+import {toto} from "./src/models/user.js";
+import LocalStrategy from "passport-local";
+import transaction from "./src/databases/mongo/connexion.js";
+
+const app = express()
+const router = express.Router();
 
 app.use(express.static('public'))
 app.use(bodyParser.json());
@@ -23,6 +29,12 @@ app.use(bodyParser.json());
 app.set("view engine", "pug");
 app.set("views", "./public/views");
 
+// Cette importation nécessite d'être déclaré avant le passport initialize et le passport session
+app.use(session({
+    secret: "toto",
+    resave: false,
+    saveUninitialized: false
+}))
 
 //Monted Route
 app.use("/", homepage);
@@ -32,12 +44,25 @@ app.get("/profile", function (req, res) {
   res.render("user_profile");
 });
 
+    res.render('index', {
+      title: 'Liste de vos contacts',
+      users:users,
+    })
+})
+
+app.get('/profile', function (req, res) {
+    res.render('user_profile')
+})
+
 app.get('/register', checkNotAuthenticated, (req, res) => {
     res.render('register');
 })
 
 app.post('/register', checkNotAuthenticated, registerController)
 
+const user = new UserClass();
+
+app.post('/login', passport.authenticate('local', { failureRedirect: '/', success: '/' }))
 
 var server = app.listen(3000, () => {
     console.log("Server online");
