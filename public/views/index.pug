@@ -1,0 +1,36 @@
+extends layout.pug
+
+block content
+    div.container
+        div.row
+            div.col
+                h1.text-center.mt-5.p-5
+                    | #{title}
+                table.table.table-hover
+                    thead.table-dark
+                        tr
+                        th(scope='col') Prénom
+                        th(scope='col') Nom
+                        th(scope='col') Email
+                        th(scope='col') Tel
+                        th(scope='col') Action
+                    tbody
+                      each user in users
+                        tr
+                          td #{user.firstname}
+                          td #{user.lastname}
+                          td #{user.email}
+                          td #{user.phone}
+                          td
+                            - var id = user.id
+                            a.delete.text-decoration-none.text-danger(href='/suppression-fiche-contact/'+ id title='Supprimer' data-toggle='tooltip')
+                                i.fa-solid.fa-trash-can.my-3
+                                ||
+                                ||
+                            //- a.edit.text-decoration-none.text-dark(href='#' title='Modifier' data-toggle='tooltip')
+                            //-     i.fa-solid.fa-pen-to-square
+                                ||
+                                ||
+                            a.view.text-decoration-none.text-info(href='/fiche-contact/'+ id title='voir le profile' data-toggle='tooltip')
+                                i.fa-solid.fa-eye
+                            

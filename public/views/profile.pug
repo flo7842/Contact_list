@@ -1,0 +1,28 @@
+extends layout.pug
+
+block content
+    .container
+        h1.text-center.py-5.mt-3 #{title} 
+        //-P.text-center Vous pouvez modifier vos informations ici.
+        .row.gutters.custom
+            .col-xl-3.col-lg-3.col-md-12.col-sm-12.col-12
+            .card.h-100
+                .card-body
+                .account-settings
+                    .user-profile
+                    .user-avatar
+                       img.img-fluid(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp' alt='Generic placeholder image' style='width: 180px; border-radius: 10px;')
+                
+            .col-xl-9.col-lg-9.col-md-12.col-sm-12.col-12
+            .card.h-100
+                .card-body
+                .row.gutters
+                    .col-xl-12.col-lg-12.col-md-12.col-sm-12.col-12
+                    h6.mb-3.text-dark Details Personels
+                    h5 #{user.firstname} #{user.lastname}
+                    
+                    
+                    
+                    
+                
+                      
