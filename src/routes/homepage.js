@@ -1,31 +1,14 @@
 import express from "express";
+import {ContactClass} from "../models/Contact.model.js";
 const router = express.Router();
 
-router.get('/', function (req, res) {
-    let users = [
-        {
-            id:1,
-            name: 'Ricardo MBK',
-            email: 'test@example.com',
-            tel:'0145287098'
-        },
-        {
-            id:4,
-            name: 'Binjamin', 
-            email: 'test@example.com',
-            tel:'0145287098'
-        },  
-        {
-            id:3,
-            name: 'Florian',
-            email: 'test@example.com',
-            tel:'0145287098'
-        }
-    ];
-
+router.get('/', async function (req, res) {
+    
+    let users  = await ContactClass.retrievesByUser("6231e5de2ead18db2dcd7035");
+    console.log(users);
     res.render('index',{
-        title: 'Liste de vos contacts',
-        users:users,
+        title: 'Contacts',
+        users:users
     })    
 })
 
