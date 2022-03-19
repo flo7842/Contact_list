@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import transaction from "../databases/mongo/connexion.js";
-import LocalStrategy from "passport-local";
 import passportLocalMongoose from "passport-local-mongoose";
-import * as User from "mongoose";
+import Generic from "./Generic.model.js";
 
 class UserClass {
+
+
   static UserSchema = new mongoose.Schema(
     {
       username: {
@@ -27,23 +27,32 @@ class UserClass {
    * @param {mongoose.Model} User
    */
   static User = UserClass.test()
+
   /**
    *
    * @param {Object} fields
    * @returns
    */
-
    static test(){
-      const mongotest = mongoose.model("User", UserClass.UserSchema);
       UserClass.UserSchema.plugin(passportLocalMongoose)
+      const mongotest = mongoose.model("User", UserClass.UserSchema, "user");
 
       return mongotest
   }
 
-
+  /**
+   *
+   * @param fields
+   * @returns {Promise<*>}
+   */
   static register(fields) {
     return Generic.create(fields, UserClass.User);
   }
+
+  static findUser(fields) {
+       return Generic.findOneBy(fields, UserClass.User);
+  }
+
   /**
    *
    * @param {String|Array} id
@@ -64,6 +73,12 @@ class UserClass {
     return Generic.modify({ _id: id }, { password: password }, UserClass.User);
   }
 
+  /**
+  *
+  * @param critera
+  * @param showFields
+  * @returns {Promise<*>}
+ */
   static retrieve(critera, showFields) {
     return Generic.read(critera, showFields, UserClass.User);
   }

@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import transaction from "../databases/mongo/connexion.js";
 
 class Generic {
@@ -13,6 +12,7 @@ class Generic {
       return await model
         .create(fields)
         .then(async (u) => {
+          console.log(u, 'Le user')
           return await u.save();
         })
         .catch((err) => {
@@ -49,6 +49,13 @@ class Generic {
       return model.updateOne(critera, values);
     });
   }
+
+  static findOneBy(critera, model) {
+    return transaction(async (connection) => {
+      return model.findOne(critera);
+    });
+  }
+
   /**
    *
    * @param {Object} critera
