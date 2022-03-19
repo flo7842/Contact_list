@@ -33,11 +33,6 @@ app.use(contact);
 app.use(profile);
 app.use(auth);
 
-(async () => {
-
-    sessionInit()
-})()
-
 var server = app.listen(3000, () => {
     console.log("Server online");
 }).on("SIGTERM", () => {

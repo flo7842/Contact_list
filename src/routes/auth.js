@@ -7,7 +7,7 @@ import Q from "q"
 import {registerController} from "../controllers/registerController.js";
 const router = express.Router();
 
-router.get('/login',(req, res) => {
+router.get('/login', (req, res) => {
     res.render('auth/login');
 })
 

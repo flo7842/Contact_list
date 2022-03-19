@@ -1,5 +1,5 @@
 export const checkAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
+    if (req.user) {
         return next()
     }
 
@@ -7,7 +7,7 @@ export const checkAuthenticated = (req, res, next) => {
 }
 
 export const checkNotAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
+    if (req.user) {
         return res.redirect('/')
     }
     next()
