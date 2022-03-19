@@ -1,29 +1,67 @@
 extends layout.pug
 
 block content
-    div.container.h-100
-        div.row
-            div.col
-                h1.mt-5.p-5.text-center
-                    |#{title}
-                .card.w-100
-                    .row.g-0
-                    .col-md-6.bg-warning
-                        .card-body
-                            .flex-shrink-0
-                                img.img-fluid(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp' alt='Generic placeholder image' style='width: 180px; border-radius: 10px;')
-                                |
-                                |
-                                img.img-fluid(src=`${data}` alt='Generic placeholder image' style='width: 180px; border-radius: 10px;')
-                                p.card-text
-                                small.text-muted
-                                |Nom : #{user.firstname}    
-                                p.card-text
-                                small.text-muted
-                                |Prénom : #{user.lastname}    
-                                p.card-text
-                                small.text-muted
-                                |Email : #{user.email}    
-                                p.card-text
-                                small.text-muted
-                                |Téléphone : #{user.phone}    
+    .container.custom
+        .row.bootstrap.snippets.bootdeys
+            .col-md-3.w-custom
+                .panel.widget
+                .widget-header.bg-primary
+                    img.img-data(src=`${data}` alt='Qrcode' style='width: 100px; border-radius: 10px;')
+                .widget-header.bg-primary.second-widget.mt-1
+                .widget-body.text-center
+                img.img-fluid(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp' alt='Generic placeholder image' style='width: 180px; border-radius: 10px;')
+                h4.mar-no.text-center.text-capitalize #{user.firstname}
+                p.text-muted.mar-btm.text-center.text-uppercase.name #{user.lastname}
+                .pad-ver
+                    button.btn.btn-primary Follow
+                    button.btn.btn-success Message
+        
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //- div.container.h-100
+    //-     div.row
+    //-         div.col
+    //-             h1.mt-5.p-5.text-center
+    //-                 |#{title}
+    //-             .card.w-100
+    //-                 .row.g-0
+    //-                 .col-md-6.bg-warning
+    //-                     .card-body
+    //-                         .flex-shrink-0
+    //-                             img.img-fluid(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp' alt='Generic placeholder image' style='width: 180px; border-radius: 10px;')
+    //-                             |
+    //-                             |
+    //-                             img.img-fluid(src=`${data}` alt='Generic placeholder image' style='width: 180px; border-radius: 10px;')
+    //-                             p.card-text
+    //-                             small.text-muted
+    //-                             |Nom : #{user.firstname}    
+    //-                             p.card-text
+    //-                             small.text-muted
+    //-                             |Prénom : #{user.lastname}    
+    //-                             p.card-text
+    //-                             small.text-muted
+    //-                             |Email : #{user.email}    
+    //-                             p.card-text
+    //-                             small.text-muted
+    //-                             |Téléphone : #{user.phone}    

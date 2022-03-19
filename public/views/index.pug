@@ -24,13 +24,13 @@ block content
                           td
                             - var id = user.id
                             a.delete.text-decoration-none.text-danger(href='/suppression-fiche-contact/'+ id title='Supprimer' data-toggle='tooltip')
-                                i.fa-solid.fa-trash-can.my-3
-                                ||
-                                ||
+                                i.fa-solid.fa-trash-can.fa-2x.my-3
+                                |
+                                |
                             //- a.edit.text-decoration-none.text-dark(href='#' title='Modifier' data-toggle='tooltip')
                             //-     i.fa-solid.fa-pen-to-square
                                 ||
                                 ||
-                            a.view.text-decoration-none.text-info(href='/fiche-contact/'+ id title='voir le profile' data-toggle='tooltip')
-                                i.fa-solid.fa-eye
+                            a.view.text-decoration-none.text-success(href='/fiche-contact/'+ id title='voir le profile' data-toggle='tooltip')
+                                i.fa-solid.fa-eye.fa-2x
                             

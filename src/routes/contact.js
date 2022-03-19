@@ -21,7 +21,7 @@ router.get('/fiche-contact/:id', async function (req, res) {
         if(contact && (contact != undefined) ){
             let qrcode = await QRCode.toDataURL(exportToVCard(contact[0]));
             res.render('contact',{
-                title: 'Fiche Contact',
+                title: 'Bienvenue',
                 user:contact[0],
                 data:qrcode
             });

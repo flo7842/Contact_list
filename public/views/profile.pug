@@ -1,28 +1,40 @@
 extends layout.pug
 
 block content
-    .container
-        h1.text-center.py-5.mt-3 #{title} 
-        //-P.text-center Vous pouvez modifier vos informations ici.
-        .row.gutters.custom
+    .container.pb-5
+        h1.text-center.py-5 #{title} #{user.firstname} #{user.lastname}
+        P.text-center Vous pouvez modifier vos informations ici.
+        .row.gutters.custom.profile
             .col-xl-3.col-lg-3.col-md-12.col-sm-12.col-12
             .card.h-100
                 .card-body
                 .account-settings
                     .user-profile
                     .user-avatar
-                       img.img-fluid(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp' alt='Generic placeholder image' style='width: 180px; border-radius: 10px;')
+                       img.img-fluid1(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp' alt='Generic placeholder image' style='width: 180px; border-radius: 10px;')
                 
             .col-xl-9.col-lg-9.col-md-12.col-sm-12.col-12
-            .card.h-100
+            .card.h-100.card-btm
                 .card-body
                 .row.gutters
                     .col-xl-12.col-lg-12.col-md-12.col-sm-12.col-12
-                    h6.mb-3.text-dark Details Personels
-                    h5 #{user.firstname} #{user.lastname}
+                    h6.mb-3.text-primary Details Personels
+                    .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12
                     
+                    .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12
+                    .form-group
+                        label(for='password') Mot de passe
+                        input#eMail.form-control(type='password' placeholder='Votre mot de passe' value='')
+
+                    .col-xl-6.col-lg-6.col-md-6.col-sm-6.col-12
+                    .form-group
+                        label(for='phone') Phone
+                        input#phone.form-control(type='text' placeholder='Téléphone')
                     
-                    
-                    
-                
-                      
+                .row.gutters
+                    .col-xl-12.col-lg-12.col-md-12.col-sm-12.col-12
+                    .text-right
+                        button#submit.btn.btn-success.mt-3(type='button' name='submit') Annuler
+                        |
+                        |
+                        button#submit.btn.btn-primary.mt-3(type='button' name='submit') Mettre à jour
