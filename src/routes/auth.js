@@ -5,9 +5,11 @@ import {UserClass} from "../models/User.model.js";
 import bcrypt from "bcryptjs";
 import Q from "q"
 import {registerController} from "../controllers/registerController.js";
+import {checkAuthenticated, checkNotAuthenticated} from "../middlewares/checkAuthStatus.js";
 const router = express.Router();
 
-router.get('/login', (req, res) => {
+router.get('/login', checkNotAuthenticated,(req, res, next) => {
+    console.log(req.session.passport)
     res.render('auth/login');
 })
 
@@ -48,10 +50,22 @@ passport.use(new LocalStrategy(
     }
 ));
 
-passport.serializeUser(UserClass.User.serializeUser());
-passport.deserializeUser(UserClass.User.deserializeUser());
+passport.serializeUser(function(user, cb) {
 
-router.post('/login', passport.authenticate('local', { failureRedirect: '/login', successRedirect: '/'}))
+    process.nextTick(function() {
+        cb(null, { id: user.id, username: user.username });
+    });
+});
+
+passport.deserializeUser(function(user, cb) {
+    process.nextTick(function() {
+        return cb(null, user);
+    });
+});
+
+router.post('/login', passport.authenticate('local', { failureRedirect: '/login', successRedirect: '/'}), function(req, res, next){
+
+})
 
 router.get('/register', (req, res) => {
     res.render('register');

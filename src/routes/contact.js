@@ -4,16 +4,14 @@ import QRCode from "qrcode";
 import { ContactClass } from "../models/Contact.model.js";
 import {exportToVCard} from "../exports/VCard.js";
 
-router.get('/suppression-fiche-contact/:id', async function(req, res) {
+router.get('/suppression-fiche-contact/:id', async function(req, res, next) {
     if(req.params.id){
         await ContactClass.delete(req.params.id);
     }
     res.redirect('/');
 })
-  
 
-
-router.get('/fiche-contact/:id', async function (req, res) {
+router.get('/fiche-contact/:id', async function (req, res, next) {
     if(req.params.id){
         let contact = await ContactClass.retrieve({_id:req.params.id});
         
